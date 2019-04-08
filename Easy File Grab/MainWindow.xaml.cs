@@ -16,6 +16,7 @@ using Microsoft.Win32;
 using WinForms = System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Easy_File_Grab
 {
@@ -24,14 +25,16 @@ namespace Easy_File_Grab
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string[] fileExtensions;
+        private readonly string[] fileExtensions;
         private DirectoryInfo selectedDirectory;
+        private readonly List<FileInfo> filteredFiles;
 
         public MainWindow()
         {
             InitializeComponent();
 
             ExtractFilesButton.IsEnabled = false;
+            filteredFiles = new List<FileInfo>();
 
             string jsonData = File.ReadAllText(@"D:\Visual Studio Projects\Repos\Easy-File-Grab\Easy File Grab\FileExtensions.json");
             fileExtensions = JsonConvert.DeserializeObject<string[]>(jsonData);
@@ -58,10 +61,19 @@ namespace Easy_File_Grab
                     if (fileExtensions.Contains(file.Extension))
                     {
                         FilesListBox.Items.Add(file.FullName);
+                        filteredFiles.Add(file);
                     }
                 }
-
-                ExtractFilesButton.IsEnabled = true;
+                if (FilesListBox.Items.IsEmpty)
+                {
+                    ExtractFilesButton.IsEnabled = false;
+                    EmptyFolderLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    ExtractFilesButton.IsEnabled = true;
+                    EmptyFolderLabel.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -69,59 +81,29 @@ namespace Easy_File_Grab
         {
             if (selectedDirectory.Exists)
             {
-                DirectoryInfo desktopCopyDirectory = new DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Easy File Grab - Archivos", selectedDirectory.Name));
-                if (!desktopCopyDirectory.Exists)
-                {
-                    DirectoryCopy(selectedDirectory.FullName, desktopCopyDirectory.FullName, true);
-                }
+                DirectoryInfo desktopCopyDirectory = new DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Easy File Grab - Archivos"));
 
-                FileInfo[] allFiles = desktopCopyDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                foreach (FileInfo file in allFiles)
+                foreach (FileInfo file in filteredFiles)
                 {
-                    if (!fileExtensions.Contains(file.Extension))
+                    int i = 0;
+                    foreach (var cutPath in Regex.Split(file.Directory.FullName, @"(?<=" + selectedDirectory.Parent.Name + @"\\(?=[^\\]+))"))
                     {
-                        file.Delete();
+                        ++i;
+                        if (i % 2 == 0)
+                        {
+                            Directory.CreateDirectory(System.IO.Path.Combine(desktopCopyDirectory.FullName, cutPath));
+                            File.Copy(file.FullName, System.IO.Path.Combine(desktopCopyDirectory.FullName, cutPath, file.Name), true);
+                        }
                     }
                 }
+
+                MessageBox.Show("Su carpeta y archivos han sido filtrados y extraidos a su escritorio dento de la carpeta \"Easy File Grab - Archivos\"", "Carpeta Extraída!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
-
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            // If the destination directory doesn't exist, create it.
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = System.IO.Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-            }
-
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = System.IO.Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
-            }
+            MessageBox.Show("Autor: Diego Castillo\nTecnologia: Windows Presentation Foundation\nLicencia: MIT", "Acerca de", MessageBoxButton.OK, MessageBoxImage.Question);
         }
     }
 }

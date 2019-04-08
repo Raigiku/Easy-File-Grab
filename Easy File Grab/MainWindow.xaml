@@ -5,12 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Easy_File_Grab"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Easy File Grab" Height="513.934" Width="859.016">
     <Grid>
-        <TextBlock Margin="111,19,102,0" TextWrapping="Wrap" Text="Easy Grab File sirve para extraer archivos de una carpeta y almacenarlos en una carpeta nueva en el escritorio." VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Center"/>
-        <Button x:Name="SelectFolderButton" Content="Seleccionar Carpeta" HorizontalAlignment="Center" Margin="0,54,0,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
-        <ListBox x:Name="FilesListBox" HorizontalAlignment="Left" Height="264" Margin="112,91,0,0" VerticalAlignment="Top" Width="578"/>
-        <Button x:Name="ExtractFilesButton" Content="Extraer Carpeta" HorizontalAlignment="Center" Margin="0,377,0,0" VerticalAlignment="Top" Width="98" Click="ExtractFilesButton_Click"/>
+        <Menu HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="851">
+            <MenuItem Header="Acerca de" Click="MenuItem_Click"/>
+        </Menu>
+
+        <TextBlock Margin="154,35,144,0" TextWrapping="Wrap" Text="Easy Grab File sirve para filtrar archivos de una carpeta (según su extensión) y copiarlos con sus directorios y subdirectorios hacia una carpeta generada automaticamente en el escritorio." VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Center"/>
+        <Button x:Name="SelectFolderButton" Content="Seleccionar Carpeta" HorizontalAlignment="Center" Margin="335,85,335,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
+        <Button x:Name="ExtractFilesButton" Content="Extraer Carpeta" HorizontalAlignment="Center" Margin="335,417,335,0" VerticalAlignment="Top" Width="122" Click="ExtractFilesButton_Click"/>
+        <ListBox x:Name="FilesListBox" Height="264" Margin="101,124,102,0" Width="589" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <TextBlock x:Name="EmptyFolderLabel" HorizontalAlignment="Center" Margin="0,212,0,0" TextWrapping="Wrap" Text="La carpeta seleccionada y sus subcarpetas no contienen archivos con las extensiones elegidas." VerticalAlignment="Top" Visibility="Hidden"/>
 
     </Grid>
 </Window>
