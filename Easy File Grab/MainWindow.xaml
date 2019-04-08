@@ -1,0 +1,16 @@
+﻿<Window x:Class="Easy_File_Grab.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Easy_File_Grab"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock Margin="111,19,102,0" TextWrapping="Wrap" Text="Easy Grab File sirve para extraer archivos de una carpeta y almacenarlos en una carpeta nueva en el escritorio." VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Center"/>
+        <Button x:Name="SelectFolderButton" Content="Seleccionar Carpeta" HorizontalAlignment="Center" Margin="0,54,0,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
+        <ListBox x:Name="FilesListBox" HorizontalAlignment="Left" Height="264" Margin="112,91,0,0" VerticalAlignment="Top" Width="578"/>
+        <Button x:Name="ExtractFilesButton" Content="Extraer Carpeta" HorizontalAlignment="Center" Margin="0,377,0,0" VerticalAlignment="Top" Width="98" Click="ExtractFilesButton_Click"/>
+
+    </Grid>
+</Window>
