@@ -8,3 +8,4 @@ The main reason why I created this application was to help the students of my un
 TLDR: It's a filter for your files and copies the same file structure to your desktop.
 
 ![alt text](Easy_File_Grab_IdmusjYMYf.png)
+![alt text](easy_file_grab.ico)
