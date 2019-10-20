@@ -11,7 +11,7 @@
             <MenuItem Header="About" Click="MenuItem_Click"/>
         </Menu>
 
-        <TextBlock Margin="172,24,161,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Justify" HorizontalAlignment="Center" Height="56"><Run Text="Easy Grab File is used to filter files from a folder (according to their extension) and copy them with their directories and subdirectories to an specified destination folder."/><LineBreak/><Run Text="The extensions should be defined in the file &quot;FileExtensions.json&quot; in the directory of this .exe"/></TextBlock>
+        <TextBlock Margin="172,24,161,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Justify" HorizontalAlignment="Center" Height="56"><Run Text="Easy Grab File is used to filter files from a folder (according to their extension) and copy them with their directories and subdirectories to a specified destination folder."/><LineBreak/><Run Text="The extensions should be defined in the file &quot;FileExtensions.json&quot; in the directory of this .exe"/></TextBlock>
         <Button x:Name="SelectFolderButton" Content="Select Folder" HorizontalAlignment="Center" Margin="335,85,335,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
         <Button x:Name="ExtractFilesButton" Content="Extract Files" HorizontalAlignment="Center" Margin="477,406,242,0" VerticalAlignment="Top" Width="198" Click="ExtractFilesButton_Click"/>
         <ListBox x:Name="FilesListBox" Height="264" Margin="101,124,102,0" Width="589" HorizontalAlignment="Center" VerticalAlignment="Top"/>
