@@ -5,17 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Easy_File_Grab"
         mc:Ignorable="d"
-        Title="Easy File Grab" Height="513.934" Width="859.016">
+        Title="Easy File Grab" Height="513.934" Width="1033.016">
     <Grid>
-        <Menu HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="851">
-            <MenuItem Header="Acerca de" Click="MenuItem_Click"/>
+        <Menu HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" MinWidth="1920">
+            <MenuItem Header="About" Click="MenuItem_Click"/>
         </Menu>
 
-        <TextBlock Margin="154,35,144,0" TextWrapping="Wrap" Text="Easy Grab File sirve para filtrar archivos de una carpeta (según su extensión) y copiarlos con sus directorios y subdirectorios hacia una carpeta generada automaticamente en el escritorio." VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Center"/>
-        <Button x:Name="SelectFolderButton" Content="Seleccionar Carpeta" HorizontalAlignment="Center" Margin="335,85,335,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
-        <Button x:Name="ExtractFilesButton" Content="Extraer Carpeta" HorizontalAlignment="Center" Margin="335,417,335,0" VerticalAlignment="Top" Width="122" Click="ExtractFilesButton_Click"/>
+        <TextBlock Margin="172,24,161,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Justify" HorizontalAlignment="Center" Height="56"><Run Text="Easy Grab File is used to filter files from a folder (according to their extension) and copy them with their directories and subdirectories to an specified destination folder."/><LineBreak/><Run Text="The extensions should be defined in the file &quot;FileExtensions.json&quot; in the directory of this .exe"/></TextBlock>
+        <Button x:Name="SelectFolderButton" Content="Select Folder" HorizontalAlignment="Center" Margin="335,85,335,0" VerticalAlignment="Top" Width="122" Click="SelectFolderButton_Click"/>
+        <Button x:Name="ExtractFilesButton" Content="Extract Files" HorizontalAlignment="Center" Margin="477,406,242,0" VerticalAlignment="Top" Width="198" Click="ExtractFilesButton_Click"/>
         <ListBox x:Name="FilesListBox" Height="264" Margin="101,124,102,0" Width="589" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <TextBlock x:Name="EmptyFolderLabel" HorizontalAlignment="Center" Margin="0,212,0,0" TextWrapping="Wrap" Text="La carpeta seleccionada y sus subcarpetas no contienen archivos con las extensiones elegidas." VerticalAlignment="Top" Visibility="Hidden"/>
+        <TextBlock x:Name="EmptyFolderLabel" HorizontalAlignment="Center" Margin="0,212,0,0" TextWrapping="Wrap" Text="The selected folder and its subfolders do not contain files with the chosen extensions." VerticalAlignment="Top" Visibility="Hidden"/>
+        <Button x:Name="DestinationDirectoryButton" Content="Destination Directory" HorizontalAlignment="Center" Margin="261,406,445,0" VerticalAlignment="Top" Width="211" Click="DestinationDirectoryButton_Click"/>
+        <TextBox x:Name="DestinationDirectoryTextBox" Height="28" HorizontalAlignment="Center" Margin="261,431,242,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Select directory..." IsReadOnly="True" Width="414"/>
 
     </Grid>
 </Window>

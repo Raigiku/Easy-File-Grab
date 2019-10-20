@@ -25,7 +25,8 @@ namespace Easy_File_Grab
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly string[] fileExtensions;
+        private string[] fileExtensions;
+        private DirectoryInfo destinationDirectory;
         private DirectoryInfo selectedDirectory;
         private readonly List<FileInfo> filteredFiles;
 
@@ -35,17 +36,18 @@ namespace Easy_File_Grab
 
             ExtractFilesButton.IsEnabled = false;
             filteredFiles = new List<FileInfo>();
-
-            string jsonData = File.ReadAllText(@"D:\Visual Studio Projects\Repos\Easy-File-Grab\Easy File Grab\FileExtensions.json");
-            fileExtensions = JsonConvert.DeserializeObject<string[]>(jsonData);
         }
 
         private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
         {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string jsonData = File.ReadAllText(currentDirectory + @"\FileExtensions.json");
+            fileExtensions = JsonConvert.DeserializeObject<string[]>(jsonData);
+
             WinForms.FolderBrowserDialog selectFolderDialog = new WinForms.FolderBrowserDialog
             {
                 ShowNewFolderButton = false,
-                SelectedPath = System.AppDomain.CurrentDomain.BaseDirectory
+                SelectedPath = AppDomain.CurrentDomain.BaseDirectory
             };
             WinForms.DialogResult result = selectFolderDialog.ShowDialog();
 
@@ -64,6 +66,7 @@ namespace Easy_File_Grab
                         filteredFiles.Add(file);
                     }
                 }
+
                 if (FilesListBox.Items.IsEmpty)
                 {
                     ExtractFilesButton.IsEnabled = false;
@@ -71,7 +74,10 @@ namespace Easy_File_Grab
                 }
                 else
                 {
-                    ExtractFilesButton.IsEnabled = true;
+                    if (!FilesListBox.Items.IsEmpty && !DestinationDirectoryTextBox.Text.Equals("Select directory..."))
+                    {
+                        ExtractFilesButton.IsEnabled = true;
+                    }
                     EmptyFolderLabel.Visibility = Visibility.Hidden;
                 }
             }
@@ -81,8 +87,6 @@ namespace Easy_File_Grab
         {
             if (selectedDirectory.Exists)
             {
-                DirectoryInfo desktopCopyDirectory = new DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Easy File Grab - Archivos"));
-
                 foreach (FileInfo file in filteredFiles)
                 {
                     int i = 0;
@@ -91,19 +95,42 @@ namespace Easy_File_Grab
                         ++i;
                         if (i % 2 == 0)
                         {
-                            Directory.CreateDirectory(System.IO.Path.Combine(desktopCopyDirectory.FullName, cutPath));
-                            File.Copy(file.FullName, System.IO.Path.Combine(desktopCopyDirectory.FullName, cutPath, file.Name), true);
+                            Directory.CreateDirectory(System.IO.Path.Combine(destinationDirectory.FullName, cutPath));
+                            File.Copy(file.FullName, System.IO.Path.Combine(destinationDirectory.FullName, cutPath, file.Name), true);
                         }
                     }
                 }
 
-                MessageBox.Show("Su carpeta y archivos han sido filtrados y extraidos a su escritorio dento de la carpeta \"Easy File Grab - Archivos\"", "Carpeta Extraída!", MessageBoxButton.OK, MessageBoxImage.Information);
+                string messageBoxInfo = $"The files in the selected folder have been filtered and extracted to the folder {destinationDirectory.FullName}";
+                MessageBox.Show(messageBoxInfo, "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Autor: Diego Castillo\nTecnologia: Windows Presentation Foundation\nLicencia: MIT", "Acerca de", MessageBoxButton.OK, MessageBoxImage.Question);
+            MessageBox.Show("Author: Diego Castillo\nTechnology: WPF, NET Framework 4.7.2\nLicense: MIT", "About", MessageBoxButton.OK, MessageBoxImage.Question);
+        }
+
+        private void DestinationDirectoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            WinForms.FolderBrowserDialog selectFolderDialog = new WinForms.FolderBrowserDialog
+            {
+                ShowNewFolderButton = false,
+                SelectedPath = System.AppDomain.CurrentDomain.BaseDirectory
+            };
+            WinForms.DialogResult result = selectFolderDialog.ShowDialog();
+
+            if (result == WinForms.DialogResult.OK)
+            {
+                string selectedPath = selectFolderDialog.SelectedPath;
+                destinationDirectory = new DirectoryInfo(selectedPath);
+                DestinationDirectoryTextBox.Text = destinationDirectory.FullName;
+
+                if (!FilesListBox.Items.IsEmpty && !DestinationDirectoryTextBox.Text.Equals("Select directory..."))
+                {
+                    ExtractFilesButton.IsEnabled = true;
+                }
+            }
         }
     }
 }
